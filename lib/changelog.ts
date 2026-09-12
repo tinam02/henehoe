@@ -13,6 +13,17 @@ export type ChangeEntry = {
 
 export const CHANGELOG: ChangeEntry[] = [
   {
+    date: '2026-09-12',
+    title: 'Frieren',
+    body: 'etc',
+    notes: [
+      '827 new items: 296 hairs, 236 faces, 85 hats, 64 overalls, 49 shoes, 39 weapons, 36 capes, 17 accessories, 7 gloves',
+      'Frieren, Fern, Stark, Himmel, Übel, Aura, Linie and Lügner sets',
+      'Sol, Red Moon Circus, Night Troupe, Maple Invasion, Pepe and the Jockey sets came with them',
+      'rm 146 old items that never drew anything',
+    ],
+  },
+  {
     date: '2026-08-14',
     title: 'Gun hold',
     body: 'Added gun sprites, the stand is available in the pose picker',

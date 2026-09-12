@@ -35,10 +35,16 @@ const FOLDERS = [
  * Character.wz is a 1x1 placeholder. 742 of 1660 capes are like that, plus
  * some weapons and hats.
  *
- * They are real items and one day they will render, but until item effects are
- * supported they are a tile you can click that does nothing, which is worse
- * than not offering them
+ * Effects render now, so an effect counts as art. Only an item that is 1x1
+ * AND has no effect is a tile you can click that does nothing
  */
+const effectIds = (() => {
+  const f = join(OUT, 'Effect', 'index.json');
+  if (!existsSync(f)) return new Set();
+  const j = JSON.parse(readFileSync(f, 'utf8'));
+  return new Set((j.items ?? j).map(e => Number(e.id ?? e)));
+})();
+
 const spriteIds = folder => {
   const dir = join(OUT, folder);
   if (!existsSync(dir)) return new Set();
@@ -51,10 +57,12 @@ const spriteIds = folder => {
     } catch {
       continue;
     }
+    const id = Number(f.replace('.json', ''));
     const canvases = Object.values(j.canvases ?? {});
-    if (!canvases.length) continue;
-    if (canvases.every(c => c.w <= 1 && c.h <= 1)) continue;
-    out.add(Number(f.replace('.json', '')));
+    const drawable =
+      canvases.length > 0 && !canvases.every(c => c.w <= 1 && c.h <= 1);
+    if (!drawable && !effectIds.has(id)) continue;
+    out.add(id);
   }
   return out;
 };

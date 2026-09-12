@@ -34,7 +34,13 @@ const WORKERS = Math.max(2, cpus().length - 2);
 const VERIFY = 150;
 
 const size = async p => await stat(p).then(s => s.size, () => 0);
-const exists = async p => await stat(p).then(() => true, () => false);
+
+// a webp existing is not a webp being current. build-sprite-icons.mjs rewrites
+// the hair and face atlases in place, and a stale webp beside a rebuilt png
+// means every icon coordinate in the json points at the wrong pixels
+const mtime = async p => await stat(p).then(s => s.mtimeMs, () => 0);
+const stale = async (png, webp) =>
+  (await mtime(webp)) < (await mtime(png));
 
 const convert = (src, out) =>
   run('ffmpeg', [
@@ -82,6 +88,9 @@ const collect = async dir => {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
     const p = join(dir, entry.name);
     if (entry.isDirectory()) {
+      // og/ ships as png on purpose, see assetFiles() in deploy.mjs. converting
+      // it just doubles what the box holds
+      if (entry.name === 'og') continue;
       if (ONLY && entry.name !== ONLY) continue;
       out.push(...(await collect(p)));
     } else if (extname(entry.name) === '.png') {
@@ -116,7 +125,7 @@ const main = async () => {
       const out = src.replace(/\.png$/, '.webp');
 
       try {
-        if (!(await exists(out))) await convert(src, out);
+        if (await stale(src, out)) await convert(src, out);
         const [a, b] = [await size(src), await size(out)];
         if (!b) throw new Error('no output');
         pngBytes += a;
