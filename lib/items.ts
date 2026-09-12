@@ -125,6 +125,19 @@ export const findItem = (key: string, slug: string): Item | null => {
 export const iconUrl = (id: number) => asSheet(`${ASSET_BASE}/items/${id}.png`);
 
 /**
+ * The open graph share card for an item page.
+ *
+ * Not asSheet, deliberately. These are drawn by tools/ogcards and go's x/image
+ * reads webp without being able to write it, so the cards are png. Nothing is
+ * lost by that: every scraper takes png, and a card is flat colour over pixel
+ * art so it indexes down to about 3 kB anyway.
+ *
+ * Relative on purpose too. metadataBase in app/layout.tsx makes it absolute,
+ * which is the one thing og:image actually requires
+ */
+export const ogUrl = (id: number) => `${ASSET_BASE}/og/${id}.png`;
+
+/**
  * A whole number scale that fits an icon in a box.
  *
  * Whole numbers only. These are 30 pixel sprites drawn at 4x, and a fractional

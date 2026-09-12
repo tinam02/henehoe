@@ -17,6 +17,7 @@ import {
   itemsIn,
   metaDescription,
   neighbours,
+  ogUrl,
   sameSet,
   titleOf,
 } from '@/lib/items';
@@ -53,6 +54,17 @@ export function generateMetadata({ params }: { params: Params }): Metadata {
   const url = itemPath(item);
   const title = `${titleOf(item)}, MapleStory ${cat?.noun ?? 'item'}`;
   const description = metaDescription(item);
+  const alt = `${titleOf(item)}, a MapleStory ${cat?.noun ?? 'item'}`;
+
+  // the share card, drawn by tools/ogcards out of the same icon the page shows.
+  //
+  // only for items that have one. the untranslated 151 are noindex and get no
+  // card, and a card that 404s is worse than no card at all: a scraper that
+  // fetches one and fails will sometimes drop the preview entirely rather than
+  // fall back to the text
+  const card = isIndexable(item)
+    ? [{ url: ogUrl(item.id), width: 1200, height: 630, alt }]
+    : undefined;
 
   return {
     title,
@@ -68,7 +80,20 @@ export function generateMetadata({ params }: { params: Params }): Metadata {
       description,
       siteName: 'Henehoe',
       locale: 'en_GB',
+      ...(card ? { images: card } : {}),
     },
+    // without this the card renders as a small square thumbnail next to the
+    // text. it is the only line that makes twitter and slack use the 1200x630
+    ...(card
+      ? {
+          twitter: {
+            card: 'summary_large_image',
+            title: `${title} | Henehoe`,
+            description,
+            images: [ogUrl(item.id)],
+          },
+        }
+      : {}),
   };
 }
 

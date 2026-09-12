@@ -10,7 +10,8 @@
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
     "maps": "node scripts/build-map-index.mjs",
-    "webp": "node scripts/webp-maps.mjs"
+    "webp": "node scripts/webp-maps.mjs",
+    "og": "go run ./tools/ogcards"
   },
   "dependencies": {
     "@mantine/core": "^7.13.3",

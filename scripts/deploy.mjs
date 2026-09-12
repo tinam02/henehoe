@@ -214,12 +214,29 @@ const changedSite = (files, have) => {
 const assetFiles = () => {
   const keep = new Set(['.webp', '.json']);
   const skip = new Set(['extract-log.txt', 'index-log.txt', 'found.txt']);
+
+  // og/ is the one place a .png ships from.
+  //
+  // the share cards are drawn by tools/ogcards, and go's x/image can read webp
+  // but not write it. every scraper takes png and an indexed card is about
+  // 3 kB, so there is nothing to gain by converting them.
+  //
+  // note they travel as art below, which is compared by name. that is right
+  // for a card whose art never changes under the same id, and wrong the day
+  // you redesign the card: the box keeps the ones it already has. wipe
+  // <DEPLOY_PATH>/avatar/og first when the design moves
+  const wanted = p => {
+    const ext = extname(p);
+    if (ext === '.png') return relOf(p).startsWith('og/');
+    return keep.has(ext);
+  };
+
   const walk = dir => {
     const out = [];
     for (const e of readdirSync(dir, { withFileTypes: true })) {
       const p = join(dir, e.name);
       if (e.isDirectory()) out.push(...walk(p));
-      else if (keep.has(extname(e.name)) && !skip.has(e.name)) out.push(p);
+      else if (wanted(p) && !skip.has(e.name)) out.push(p);
     }
     return out;
   };
