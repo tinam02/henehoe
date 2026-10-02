@@ -9,7 +9,7 @@ export const MIN_SKIN_ID = 2000;
 // Head ids mirror the body skin id offset by this much.
 export const HEAD_ID_OFFSET = 10000;
 
-// Ids that don't render a real skin 
+// Ids that don't render a real skin
 // VISUAL VERIFICATION BY DEV by pressing the skin buttons, add to this list as you find more
 const SKIP_SKIN_IDS = new Set<number>([
   2006, 2007, 2008, 2014, 2017, 2024, 2031, 2041, 2042, 2044,
@@ -63,6 +63,9 @@ export const SKIN_NAMES: Record<number, string> = {
   2048: 'Hessonite',
 };
 
+// The one skin the game lets you tint
+export const CUSTOM_SKIN_ID = 2047;
+
 export const skinLabel = (id: number) => SKIN_NAMES[id] || String(id);
 
 // Name as other simulators write it in exported JSON ("Soft Lavender Skin").
@@ -70,21 +73,28 @@ export const skinLabel = (id: number) => SKIN_NAMES[id] || String(id);
 export const skinFullName = (id: number): string | undefined =>
   SKIN_NAMES[id] ? `${SKIN_NAMES[id]} Skin` : undefined;
 
+// drops the custom skin's tint
+const untinted = ({ hue, saturation, brightness, ...item }: OutfitItem) => item;
+
 /**
  * A bare body and head in one skin, for a swatch.
+ *
+ * Only the skin being worn keeps its tint, or every other swatch would wear it too
  */
-export const skinSwatchOutfit = (outfit: Outfit, id: number): Outfit => ({
-  ...outfit,
-  selectedItems: {
-    Body: { ...(outfit.selectedItems.Body as OutfitItem), id },
-    Head: {
-      ...(outfit.selectedItems.Head as OutfitItem),
-      id: id + HEAD_ID_OFFSET,
+export const skinSwatchOutfit = (outfit: Outfit, id: number): Outfit => {
+  const body = outfit.selectedItems.Body as OutfitItem;
+  const head = outfit.selectedItems.Head as OutfitItem;
+  const keep = (item: OutfitItem) => (body.id === id ? item : untinted(item));
+  return {
+    ...outfit,
+    selectedItems: {
+      Body: { ...keep(body), id },
+      Head: { ...keep(head), id: id + HEAD_ID_OFFSET },
     },
-  },
-  emotion: 'default',
-  action: 'stand1',
-  frame: 0,
-  animating: false,
-  flipX: false,
-});
+    emotion: 'default',
+    action: 'stand1',
+    frame: 0,
+    animating: false,
+    flipX: false,
+  };
+};

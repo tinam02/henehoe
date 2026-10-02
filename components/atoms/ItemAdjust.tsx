@@ -52,6 +52,12 @@ export const isAdjusted = (item: OutfitItem) =>
   isStacked(item) ||
   KEYS.some(k => valueOf(item, k) !== ADJUSTMENTS[k]);
 
+// landing on neutral removes the key instead of storing the number
+const patchFor = (key: AdjustmentKey, value: number) =>
+  ({
+    [key]: value === ADJUSTMENTS[key] ? undefined : value,
+  }) as Partial<OutfitItem>;
+
 const format = (key: AdjustmentKey, value: number) =>
   key === 'hue' ? `${Math.round(value)}°` : `${Math.round(value * 100)}%`;
 
@@ -177,11 +183,7 @@ const ItemAdjust = ({
           // A hidden layer is forced to alpha 0 in the render URL, so a live
           // opacity slider would contradict what you see.
           disabled={hidden && key === 'alpha'}
-          onCommit={value =>
-            onChange({
-              [key]: value === ADJUSTMENTS[key] ? undefined : value,
-            } as Partial<OutfitItem>)
-          }
+          onCommit={value => onChange(patchFor(key, value))}
         />
       ))}
 
@@ -230,5 +232,32 @@ const ItemAdjust = ({
     </div>
   );
 };
+
+const TINT_KEYS: AdjustmentKey[] = ['hue', 'saturation', 'brightness'];
+
+/**
+ * The custom skin's three sliders, what the game itself offers for it.
+ *
+ * Reads off the body, the owner writes each patch to the head as well
+ */
+export const SkinTint = ({
+  body,
+  onChange,
+}: {
+  body: OutfitItem;
+  onChange: (patch: Partial<OutfitItem>) => void;
+}) => (
+  <div className={styles.panel}>
+    {TINT_KEYS.map(key => (
+      <Row
+        key={key}
+        item={body}
+        adjustment={key}
+        onCommit={value => onChange(patchFor(key, value))}
+      />
+    ))}
+    <p className={styles.note}>bear in mind it&apos;s not 1:1 with in-game dyeing!</p>
+  </div>
+);
 
 export default ItemAdjust;
