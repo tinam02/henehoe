@@ -235,6 +235,10 @@ const ItemAdjust = ({
 
 const TINT_KEYS: AdjustmentKey[] = ['hue', 'saturation', 'brightness'];
 
+// The custom skin is dark blue. There's no icon to sample like items have, so
+// this was measured off Body/2047.png with the same maths as useDominantHue
+const CUSTOM_SKIN_HUE = 222;
+
 /**
  * The custom skin's three sliders, what the game itself offers for it.
  *
@@ -247,7 +251,14 @@ export const SkinTint = ({
   body: OutfitItem;
   onChange: (patch: Partial<OutfitItem>) => void;
 }) => (
-  <div className={styles.panel}>
+  <div
+    className={styles.panel}
+    style={
+      {
+        '--hue-gradient': hueGradientFrom(CUSTOM_SKIN_HUE),
+      } as CSSProperties
+    }
+  >
     {TINT_KEYS.map(key => (
       <Row
         key={key}
