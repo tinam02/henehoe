@@ -13,6 +13,11 @@ export type ChangeEntry = {
 
 export const CHANGELOG: ChangeEntry[] = [
   {
+    date: '2026-10-02',
+    title: 'Custom skin dyer',
+    body: 'The "custom" skin can now be dyed with a color picker',
+  },
+  {
     date: '2026-09-12',
     title: 'Frieren',
     body: 'etc',
