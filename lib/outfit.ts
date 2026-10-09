@@ -35,6 +35,32 @@ const DEFAULT_HAIR: OutfitItem = {
 };
 
 /**
+ * Frenzy mode's extra items sit in selectedItems beside the slot they came
+ * from, as "Hair #2", "Hair #3". This is the slot they render as
+ */
+export const baseSlot = (key: string) => key.replace(/ #\d+$/, '');
+
+/**
+ * Where an item goes when equipped.
+ *
+ * Its own slot, unless frenzy is on and that is taken, then the next free
+ * extra. Extras are stacked so they hide nothing and nothing hides them.
+ * Null when it's already worn, two of one item would share one set of sliders
+ */
+export const equipInto = (
+  outfit: Outfit,
+  slot: string,
+  item: OutfitItem,
+): [string, OutfitItem] | null => {
+  const items = outfit.selectedItems;
+  if (!outfit.frenzy || !items[slot]) return [slot, item];
+  if (Object.values(items).some(i => i.id === item.id)) return null;
+  let n = 2;
+  while (items[`${slot} #${n}`]) n++;
+  return [`${slot} #${n}`, { ...item, vslot: '' }];
+};
+
+/**
  * Body/Head entries for a skin id. We track one id; the format wants both
  * layers spelled out, and Head is always Body + 10000.
  */
@@ -127,7 +153,7 @@ const parseItem = (slot: string, raw: any): OutfitItem | null => {
       overallCategory: raw.typeInfo?.overallCategory,
       category: raw.typeInfo?.category,
       // The key is the authority — some exports disagree with typeInfo.
-      subCategory: slot,
+      subCategory: baseSlot(slot),
       lowItemId: toNumber(raw.typeInfo?.lowItemId),
       highItemId: toNumber(raw.typeInfo?.highItemId),
     },
@@ -138,6 +164,8 @@ const parseItem = (slot: string, raw: any): OutfitItem | null => {
     if (value !== undefined) item[key] = value;
   }
   if (typeof raw.vslot === 'string') item.vslot = raw.vslot;
+  const depth = toNumber(raw.depth);
+  if (depth) item.depth = depth;
   if (raw.visible === false) item.visible = false;
   if (raw.effect === false) item.effect = false;
   const equipFrame = toNumber(raw.equipFrame);

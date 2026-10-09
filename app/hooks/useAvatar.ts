@@ -3,6 +3,7 @@ import { FACE_PARTS, ItemManifest, WornItem } from '@/lib/avatar';
 import { EffectManifest, WornEffect } from '@/lib/effects';
 import { Outfit } from '@/types';
 import { ASSET_BASE, SHEET_EXT } from '@/lib/assets';
+import { baseSlot } from '@/lib/outfit';
 import { useEffect, useState } from 'react';
 
 /**
@@ -45,8 +46,8 @@ const FOLDERS: Record<string, string> = {
 const folderFor = (slot: string, category?: string) =>
   FOLDERS[slot] ?? (category?.includes('Weapon') ? 'Weapon' : null);
 
-// the part name only has to be stable and unique per worn item. body, head,
-// face and hair have to match by name though, they're the claim order
+// body, head, face and hair have to match by name, they're the claim order.
+// not unique, a frenzy extra shares its slot's part, layer names carry the id
 const partFor = (slot: string) => slot.toLowerCase().replace(/\s+/g, '');
 
 /**
@@ -185,7 +186,8 @@ const useAvatar = (outfit: Outfit, enabled: boolean) => {
       ([slot, item]) =>
         // effect is in here for the same reason vslot is. it decides whether
         // the effect is fetched at all, not how it is painted
-        `${slot}:${item?.id}:${item?.vslot ?? ''}:${item?.effect === false ? 'x' : ''}`,
+        // depth too, it reorders layers rather than painting them
+        `${slot}:${item?.id}:${item?.vslot ?? ''}:${item?.effect === false ? 'x' : ''}:${item?.depth ?? ''}`,
     )
     .sort()
     .join(',');
@@ -209,11 +211,13 @@ const useAvatar = (outfit: Outfit, enabled: boolean) => {
       const built = await Promise.all(
         entries.map(async ([slot, item]) => {
           if (!item) return null;
-          const folder = folderFor(slot, item.typeInfo?.category);
+          // a frenzy extra renders as the slot it came from
+          const base = baseSlot(slot);
+          const folder = folderFor(base, item.typeInfo?.category);
           if (!folder) return null;
           const { manifest, file } = await loadCarried(folder, item.id, outfit.carry);
           if (!manifest) return { slot, item: null };
-          const part = partFor(slot);
+          const part = partFor(base);
           return {
             slot,
             item: {
@@ -227,6 +231,7 @@ const useAvatar = (outfit: Outfit, enabled: boolean) => {
                 : undefined,
               // set by the stack toggle, and carried in an imported outfit
               vslot: item.vslot,
+              depth: item.depth,
             } as WornItem,
           };
         }),

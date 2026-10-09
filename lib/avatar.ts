@@ -84,6 +84,8 @@ export type WornItem = {
    * breathing
    */
   frame?: number;
+  /** the depth buttons, see placeLayers */
+  depth?: number;
 };
 
 /** one drawable piece, resolved for a given stance and frame */
@@ -103,6 +105,7 @@ export type AvatarLayer = {
   vslot: string;
   islot: string;
   map: Record<string, Point>;
+  depth?: number;
 };
 
 export type PlacedLayer = AvatarLayer & { x: number; y: number };
@@ -202,7 +205,7 @@ export const layersFor = (
   const out: AvatarLayer[] = [];
 
   for (const {
-    part, manifest, sheetUrl, stance: own, frame: ownFrame, vslot: ownSlot,
+    part, manifest, sheetUrl, stance: own, frame: ownFrame, vslot: ownSlot, depth,
   } of worn) {
     const key = own ?? stance;
     const seq = manifest.frames[key] ?? manifest.frames.default;
@@ -214,7 +217,8 @@ export const layersFor = (
       const c = manifest.canvases[String(idx)];
       if (!c?.origin) continue;
       out.push({
-        name: `${part}-${layer}`,
+        // the id too, or a frenzy extra's layers collide with its slot's
+        name: `${part}-${manifest.id}-${layer}`,
         part,
         item: manifest.id,
         layer,
@@ -228,6 +232,7 @@ export const layersFor = (
         vslot: ownSlot ?? manifest.vslot,
         islot: manifest.islot,
         map: c.map ?? {},
+        depth,
       });
     }
   }
@@ -349,6 +354,10 @@ const zLookup = (zmap: string[]) => {
   };
 };
 
+// zmap places per depth click. one place mostly changes nothing you can see,
+// four takes a cap (45) over hairOverHead (42) in a single click
+const DEPTH_STEP = 4;
+
 /**
  * Where each layer goes, and in what order.
  *
@@ -424,11 +433,25 @@ export const placeLayers = (layers: AvatarLayer[], zmap: string[]) => {
     return own.every(c => covers.has(c));
   };
 
-  // never pulls a layer forward, only holds it back
+  // The depth buttons. Each click is DEPTH_STEP places through zmap, but never
+  // across the body: the back of a hair stays behind it however far forward it
+  // goes, and nothing sent back disappears behind the skin. Two layers clamped
+  // onto the same spot fall to the islot tie break below
+  const bodyZ = zAt('body', 'body');
+  const depthed = (l: AvatarLayer, z: number) => {
+    if (!l.depth) return z;
+    const moved = z - l.depth * DEPTH_STEP;
+    return z > bodyZ ? Math.max(moved, bodyZ + 0.5) : Math.min(moved, bodyZ - 0.5);
+  };
+
+  // the stack rule never pulls a layer forward, only holds it back
   const zOf = new Map(
     layers.map(l => [
       l.name,
-      stackedUnder(l) ? Math.max(rawZ(l), rear[side(l)] + 0.5) : rawZ(l),
+      depthed(
+        l,
+        stackedUnder(l) ? Math.max(rawZ(l), rear[side(l)] + 0.5) : rawZ(l),
+      ),
     ]),
   );
 

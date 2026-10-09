@@ -1,0 +1,166 @@
+{
+  "id": 1789925222587,
+  "type": "character",
+  "action": "stand1",
+  "emotion": "blink",
+  "skin": "2003",
+  "zoom": 3,
+  "frame": 0,
+  "mercEars": false,
+  "illiumEars": false,
+  "highFloraEars": false,
+  "selectedItems": {
+    "Body": {
+      "noIcon": true,
+      "region": "GMS",
+      "version": "265",
+      "name": "Pale Skin (Body)",
+      "skinName": "Pale Skin",
+      "id": 2003,
+      "typeInfo": {
+        "overallCategory": "Character",
+        "category": "Character",
+        "subCategory": "Body",
+        "lowItemId": 2000,
+        "highItemId": 2999
+      }
+    },
+    "Head": {
+      "noIcon": true,
+      "region": "GMS",
+      "version": "265",
+      "name": "Pale Skin (Head)",
+      "id": 12003,
+      "typeInfo": {
+        "overallCategory": "Character",
+        "category": "Character",
+        "subCategory": "Head",
+        "lowItemId": 12000,
+        "highItemId": 12999
+      }
+    },
+    "Hair": {
+      "id": 65350,
+      "name": "Thunder Breaker Knight Hair",
+      "isCash": false,
+      "region": "GMS",
+      "version": "265",
+      "typeInfo": {
+        "subCategory": "Hair"
+      },
+      "hue": 177,
+      "brightness": 0.9
+    },
+    "Eye Decoration": {
+      "id": 1022143,
+      "name": "Super Summer Goggles",
+      "isCash": false,
+      "region": "GMS",
+      "version": "265",
+      "typeInfo": {
+        "subCategory": "Eye Decoration"
+      },
+      "hue": 215,
+      "alpha": 0.9,
+      "brightness": 0.95,
+      "saturation": 1.1
+    },
+    "Top": {
+      "id": 1042210,
+      "name": "Mustang Vest Pink Tee",
+      "isCash": true,
+      "region": "GMS",
+      "version": "265",
+      "typeInfo": {
+        "subCategory": "Top"
+      },
+      "hue": 33,
+      "saturation": 0.6,
+      "vslot": "",
+      "brightness": 0.9
+    },
+    "Overall": {
+      "id": 1054346,
+      "name": "Dazzling in Denim Outfit",
+      "isCash": true,
+      "region": "GMS",
+      "version": "265",
+      "typeInfo": {
+        "subCategory": "Overall"
+      },
+      "hue": 338,
+      "saturation": 0.5,
+      "brightness": 0.95
+    },
+    "Shoes": {
+      "id": 1074371,
+      "name": "Checkmate Shoes",
+      "isCash": true,
+      "region": "GMS",
+      "version": "265",
+      "typeInfo": {
+        "subCategory": "Shoes"
+      },
+      "brightness": 0.95
+    },
+    "Face Accessory": {
+      "id": 1012097,
+      "name": "Purple Noisemaker",
+      "isCash": true,
+      "region": "GMS",
+      "version": "265",
+      "typeInfo": {
+        "subCategory": "Face Accessory"
+      },
+      "saturation": 0.3,
+      "hue": 81,
+      "brightness": 1.4,
+      "contrast": 0.85
+    },
+    "Face": {
+      "id": 55063,
+      "name": "Ugh Face",
+      "isCash": false,
+      "region": "GMS",
+      "version": "265",
+      "typeInfo": {
+        "subCategory": "Face"
+      },
+      "contrast": 1.1,
+      "saturation": 0.9,
+      "brightness": 0.8
+    },
+    "Glove": {
+      "id": 1082079,
+      "name": "Black Bandage",
+      "isCash": true,
+      "region": "GMS",
+      "version": "265",
+      "typeInfo": {
+        "subCategory": "Glove"
+      },
+      "visible": false
+    },
+    "Earrings": {
+      "id": 1032370,
+      "name": "Half-Hoop Earrings",
+      "isCash": true,
+      "region": "GMS",
+      "version": "265",
+      "typeInfo": {
+        "subCategory": "Earrings"
+      },
+      "vslot": ""
+    }
+  },
+  "visible": true,
+  "position": {
+    "x": 0,
+    "y": 0
+  },
+  "fhSnap": true,
+  "flipX": false,
+  "name": " copy copy",
+  "includeBackground": false,
+  "animating": true
+}

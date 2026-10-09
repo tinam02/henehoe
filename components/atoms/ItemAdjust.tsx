@@ -47,6 +47,7 @@ export const isStacked = (item: OutfitItem) => item.vslot !== undefined;
 
 /** Any non-neutral adjustment, a hidden layer, a stacked one, or a muted effect. Drives the "edited" marker. */
 export const isAdjusted = (item: OutfitItem) =>
+  !!item.depth ||
   item.visible === false ||
   item.effect === false ||
   isStacked(item) ||
@@ -82,17 +83,20 @@ const Row = ({
   item,
   adjustment,
   disabled,
+  max = RANGES[adjustment].max,
   onCommit,
 }: {
   item: OutfitItem;
   adjustment: AdjustmentKey;
   disabled?: boolean;
+  /** overrides the range's top, for the custom skin's brightness */
+  max?: number;
   onCommit: (value: number) => void;
 }) => {
   const [dragged, setDragged] = useState<number | null>(null);
   const committed = valueOf(item, adjustment);
   const shown = dragged ?? committed;
-  const { min, max, step } = RANGES[adjustment];
+  const { min, step } = RANGES[adjustment];
 
   return (
     <div className={styles.row} data-disabled={disabled ? '' : undefined}>
@@ -145,6 +149,7 @@ const ItemAdjust = ({
 }) => {
   const hidden = item.visible === false;
   const stacked = isStacked(item);
+  const depth = item.depth ?? 0;
 
   const effectIds = useEffectIds();
   const hasEffect = !!effectIds?.has(item.id);
@@ -159,6 +164,7 @@ const ItemAdjust = ({
       visible: undefined,
       vslot: undefined,
       effect: undefined,
+      depth: undefined,
     };
     for (const key of KEYS) patch[key] = undefined;
     onChange(patch);
@@ -187,6 +193,32 @@ const ItemAdjust = ({
         />
       ))}
 
+      {/* 0 is where the game draws it, and stores nothing */}
+      <div className={styles.row}>
+        <div className={styles.rowHead}>
+          <span>Depth</span>
+          <span className={styles.value} data-neutral={!depth ? '' : undefined}>
+            {depth > 0 ? `+${depth}` : depth}
+          </span>
+        </div>
+        <div className={styles.foot}>
+          <button
+            type='button'
+            className={styles.footBtn}
+            onClick={() => onChange({ depth: depth - 1 || undefined })}
+          >
+            Back
+          </button>
+          <button
+            type='button'
+            className={styles.footBtn}
+            onClick={() => onChange({ depth: depth + 1 || undefined })}
+          >
+            Forward
+          </button>
+        </div>
+      </div>
+
       <div className={styles.foot}>
         <button
           type='button'
@@ -213,8 +245,8 @@ const ItemAdjust = ({
           onClick={() => onChange({ vslot: stacked ? undefined : STACK_VSLOT })}
           data-on={stacked ? '' : undefined}
           title={
-            'Draw this even when something covering it would normally take its ' +
-            'place, so pants show under an overall'
+            'Stacked items hide nothing and nothing hides them, so pants show ' +
+            'under an overall. Unstack a hair and its hat to have the hat cut it'
           }
         >
           {stacked ? 'Stacked' : 'Stack'}
@@ -238,6 +270,9 @@ const TINT_KEYS: AdjustmentKey[] = ['hue', 'saturation', 'brightness'];
 // The custom skin is dark blue. There's no icon to sample like items have, so
 // this was measured off Body/2047.png with the same maths as useDominantHue
 const CUSTOM_SKIN_HUE = 222;
+
+// the skin starts that dark, so the items' 200% can't get it anywhere near pale
+const CUSTOM_SKIN_MAX_BRIGHTNESS = 3;
 
 /**
  * The custom skin's three sliders, what the game itself offers for it.
@@ -264,6 +299,7 @@ export const SkinTint = ({
         key={key}
         item={body}
         adjustment={key}
+        max={key === 'brightness' ? CUSTOM_SKIN_MAX_BRIGHTNESS : undefined}
         onCommit={value => onChange(patchFor(key, value))}
       />
     ))}

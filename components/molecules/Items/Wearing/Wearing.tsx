@@ -10,6 +10,7 @@ import ItemAdjust, { isAdjusted } from '@/components/atoms/ItemAdjust';
 import { useItemIcon } from '@/app/hooks/useItemIndex';
 import SpriteIcon from '@/components/atoms/SpriteIcon/SpriteIcon';
 import { OutfitItem } from '@/types';
+import { baseSlot } from '@/lib/outfit';
 import { warmDominantHue } from '@/app/hooks/useDominantHue';
 import { Popover } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -22,7 +23,7 @@ const WornItem = ({ slot, item }: { slot: string; item: OutfitItem }) => {
   const [opened, { toggle, close }] = useDisclosure(false);
   const edited = isAdjusted(item);
   // null only while the index is still loading
-  const icon = useItemIcon(slot, item.id);
+  const icon = useItemIcon(baseSlot(slot), item.id);
 
   // Sample the hue while the row is just sitting there
   useEffect(() => {
@@ -100,8 +101,9 @@ const WornItem = ({ slot, item }: { slot: string; item: OutfitItem }) => {
 };
 
 const Wearing = ({}: {}) => {
-  const { outfit } = useChar();
+  const { outfit, setOutfit } = useChar();
   const [min, toggleMin] = useMinimized('wearing');
+  const frenzy = !!outfit.frenzy;
 
   // Body/head are the skin, not removable equipment — the skin picker owns them.
   const entries = Object.entries(outfit.selectedItems).filter(
@@ -131,6 +133,17 @@ const Wearing = ({}: {}) => {
               <WornItem key={slot} slot={slot} item={item} />
             ))}
           </div>
+          {/* turning it off keeps the extras, it only changes what equip does */}
+          <button
+            type='button'
+            className={styles.frenzyBtn}
+            data-on={frenzy ? '' : undefined}
+            onClick={() => setOutfit(prev => ({ ...prev, frenzy: !prev.frenzy }))}
+            title='Equipping into a taken slot adds the item instead of replacing it'
+          >
+            {frenzy ? 'Frenzy on' : 'Frenzy off'}
+            <span className={styles.frenzyNote}>experimental</span>
+          </button>
         </div>
       </div>
     </DragWrapper>

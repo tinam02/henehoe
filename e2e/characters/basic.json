@@ -1,0 +1,26 @@
+{
+  "id": 1,
+  "type": "character",
+  "action": "stand1",
+  "emotion": "default",
+  "skin": "2000",
+  "zoom": 2,
+  "frame": 0,
+  "mercEars": false,
+  "illiumEars": false,
+  "highFloraEars": false,
+  "selectedItems": {
+    "Body": { "name": "Body", "id": 2000, "region": "GMS", "version": "265", "noIcon": true, "typeInfo": { "overallCategory": "Character", "category": "Character", "subCategory": "Body", "lowItemId": 2000, "highItemId": 2999 } },
+    "Head": { "name": "Head", "id": 12000, "region": "GMS", "version": "265", "noIcon": true, "typeInfo": { "overallCategory": "Character", "category": "Character", "subCategory": "Head", "lowItemId": 12000, "highItemId": 12999 } },
+    "Face": { "name": "Defiant Face", "id": 20000, "region": "GMS", "version": "265", "typeInfo": { "overallCategory": "Equip", "category": "Character", "subCategory": "Face", "lowItemId": 20000, "highItemId": 29999 } },
+    "Hair": { "name": "Toben Hair", "id": 30000, "region": "GMS", "version": "265", "typeInfo": { "overallCategory": "Equip", "category": "Character", "subCategory": "Hair", "lowItemId": 30000, "highItemId": 49999 } },
+    "Hat": { "name": "Hat", "id": 1000000, "region": "GMS", "version": "265", "typeInfo": { "overallCategory": "Equip", "category": "Armor", "subCategory": "Hat" } }
+  },
+  "visible": true,
+  "position": { "x": 0, "y": 0 },
+  "fhSnap": true,
+  "flipX": false,
+  "name": "",
+  "includeBackground": false,
+  "animating": false
+}

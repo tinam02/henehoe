@@ -8,7 +8,10 @@ import { defineConfig, devices } from '@playwright/test';
  */
 
 const PORT = Number(process.env.E2E_PORT || 3100);
-const baseURL = `http://127.0.0.1:${PORT}`;
+// E2E_BASE=https://henehoe.app runs against the live site instead, which is
+// how the render baselines are made, see e2e/render.spec.ts
+const LIVE = process.env.E2E_BASE;
+const baseURL = LIVE || `http://127.0.0.1:${PORT}`;
 
 export default defineConfig({
   testDir: './e2e',
@@ -23,6 +26,9 @@ export default defineConfig({
   timeout: 90_000,
   expect: { timeout: 15_000 },
 
+  // baselines sit beside the character they're of, with no per-OS suffix
+  snapshotPathTemplate: '{testDir}/characters/{arg}{ext}',
+
   use: {
     baseURL,
     trace: 'on-first-retry',
@@ -33,7 +39,7 @@ export default defineConfig({
 
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
 
-  webServer: {
+  webServer: LIVE ? undefined : {
     command: `npx next dev -p ${PORT}`,
     url: baseURL,
     reuseExistingServer: !process.env.CI,

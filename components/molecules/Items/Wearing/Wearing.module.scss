@@ -144,6 +144,41 @@
   box-shadow: none;
 }
 
+// dark like the adjust panel, the card behind it is too light for a see-through button
+.frenzyBtn {
+  flex: none;
+  margin: 0 8px 8px;
+  padding: 5px 0;
+  border: 0;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.6);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+  color: #fff;
+  font-family: inherit;
+  font-size: 11px;
+  line-height: 1.1;
+  cursor: pointer;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.75);
+  }
+
+  &[data-on] {
+    background: rgba(0, 0, 0, 0.6);
+    box-shadow: inset 0 0 0 1px #ffe39a;
+    color: #ffe39a;
+  }
+}
+
+.frenzyNote {
+  font-size: 8px;
+  opacity: 0.55;
+}
+
 .closeIcon img {
   align-self: center;
   margin-right: 8px;

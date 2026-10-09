@@ -45,6 +45,8 @@ export interface OutfitItem {
   contrast?: number;
   alpha?: number;
   vslot?: string;
+  /** clicks forward (+) or back (-) from where the game draws it, see placeLayers */
+  depth?: number;
   visible?: boolean;
   /**
    * Draws the item's Effect.wz art, when it has any.
@@ -99,6 +101,8 @@ export interface Outfit {
   name: string;
   includeBackground: boolean;
   animating: boolean;
+  /** equipping into a taken slot adds an extra instead of replacing, see equipInto */
+  frenzy?: boolean;
 }
 
 export type FaceEmoteOptions =

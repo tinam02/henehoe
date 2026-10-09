@@ -3,6 +3,7 @@ import { Caption, Outfit, OutfitItem } from '@/types';
 import {
   createOutfit,
   DEFAULT_SKIN_ID,
+  equipInto,
   skinEntries,
   skinIdOf,
   withSkin,
@@ -319,10 +320,14 @@ export function CharProvider({ children }: { children: React.ReactNode }) {
 
   const equip = useCallback(
     (slot: string, item: OutfitItem) => {
-      setOutfit(prev => ({
-        ...prev,
-        selectedItems: { ...prev.selectedItems, [slot]: item },
-      }));
+      setOutfit(prev => {
+        const into = equipInto(prev, slot, item);
+        if (!into) return prev;
+        return {
+          ...prev,
+          selectedItems: { ...prev.selectedItems, [into[0]]: into[1] },
+        };
+      });
     },
     [setOutfit],
   );

@@ -1,0 +1,186 @@
+{
+  "id": 1789256325950,
+  "type": "character",
+  "action": "stand1",
+  "emotion": "blink",
+  "skin": "2004",
+  "zoom": 3,
+  "frame": 0,
+  "mercEars": false,
+  "illiumEars": false,
+  "highFloraEars": false,
+  "selectedItems": {
+    "Body": {
+      "noIcon": true,
+      "region": "GMS",
+      "version": "265",
+      "name": "Blue Gray Skin (Body)",
+      "skinName": "Blue Gray Skin",
+      "id": 2004,
+      "typeInfo": {
+        "overallCategory": "Character",
+        "category": "Character",
+        "subCategory": "Body",
+        "lowItemId": 2000,
+        "highItemId": 2999
+      }
+    },
+    "Head": {
+      "noIcon": true,
+      "region": "GMS",
+      "version": "265",
+      "name": "Blue Gray Skin (Head)",
+      "id": 12004,
+      "typeInfo": {
+        "overallCategory": "Character",
+        "category": "Character",
+        "subCategory": "Head",
+        "lowItemId": 12000,
+        "highItemId": 12999
+      }
+    },
+    "Bottom": {
+      "id": 1061124,
+      "name": "Red Leggings",
+      "isCash": true,
+      "region": "GMS",
+      "version": "265",
+      "typeInfo": {
+        "subCategory": "Bottom"
+      },
+      "hue": 360,
+      "vslot": ""
+    },
+    "Face Accessory": {
+      "id": 1012872,
+      "name": "Gentle Smile Oceanleli Face Accessory",
+      "isCash": true,
+      "region": "GMS",
+      "version": "265",
+      "typeInfo": {
+        "subCategory": "Face Accessory"
+      },
+      "brightness": 2,
+      "saturation": 0
+    },
+    "Face": {
+      "id": 22812,
+      "name": "One-Eyed Cattertons Face",
+      "isCash": false,
+      "region": "GMS",
+      "version": "265",
+      "typeInfo": {
+        "subCategory": "Face"
+      }
+    },
+    "Hair": {
+      "id": 44516,
+      "name": "Purple Butterfly Dance Hair",
+      "isCash": false,
+      "region": "GMS",
+      "version": "265",
+      "typeInfo": {
+        "subCategory": "Hair"
+      }
+    },
+    "Eye Decoration": {
+      "id": 1022375,
+      "name": "Red Beryl Eye Accessory",
+      "isCash": false,
+      "region": "GMS",
+      "version": "265",
+      "typeInfo": {
+        "subCategory": "Eye Decoration"
+      },
+      "saturation": 0.15,
+      "brightness": 2,
+      "contrast": 2,
+      "alpha": 0.75,
+      "hue": 282
+    },
+    "Hat": {
+      "id": 1007116,
+      "name": "Crimson Butterfly Brooch",
+      "isCash": true,
+      "region": "GMS",
+      "version": "265",
+      "typeInfo": {
+        "subCategory": "Hat"
+      }
+    },
+    "Overall": {
+      "id": 1054781,
+      "name": "Mechanic Arm Suit",
+      "isCash": true,
+      "region": "GMS",
+      "version": "265",
+      "typeInfo": {
+        "subCategory": "Overall"
+      }
+    },
+    "Earrings": {
+      "id": 1032360,
+      "name": "Frieren's Earrings",
+      "isCash": true,
+      "region": "GMS",
+      "version": "265",
+      "typeInfo": {
+        "subCategory": "Earrings"
+      }
+    },
+    "Shoes": {
+      "id": 1074213,
+      "name": "Sleepy Puppy Shoes",
+      "isCash": true,
+      "region": "GMS",
+      "version": "265",
+      "typeInfo": {
+        "subCategory": "Shoes"
+      }
+    },
+    "Weapon": {
+      "id": 1222085,
+      "name": "Commerci Soul Shooter",
+      "isCash": false,
+      "region": "GMS",
+      "version": "265",
+      "typeInfo": {
+        "subCategory": "Weapon"
+      },
+      "saturation": 0.65,
+      "hue": 76
+    },
+    "Glove": {
+      "id": 1082840,
+      "name": "Limbo's Gloves",
+      "isCash": true,
+      "region": "GMS",
+      "version": "265",
+      "typeInfo": {
+        "subCategory": "Glove"
+      }
+    },
+    "Cape": {
+      "id": 1103841,
+      "name": "Sino's Tail",
+      "isCash": true,
+      "region": "GMS",
+      "version": "265",
+      "typeInfo": {
+        "subCategory": "Cape"
+      },
+      "hue": 80,
+      "saturation": 0.5
+    }
+  },
+  "visible": true,
+  "position": {
+    "x": 0,
+    "y": 0
+  },
+  "fhSnap": true,
+  "flipX": false,
+  "name": " copy copy",
+  "includeBackground": false,
+  "animating": true
+}

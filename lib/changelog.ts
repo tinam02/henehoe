@@ -13,6 +13,16 @@ export type ChangeEntry = {
 
 export const CHANGELOG: ChangeEntry[] = [
   {
+    date: '2026-10-09',
+    title: 'Frenzy mode (uncontrolled layering)',
+    body: 'Wear as many hairs, hats and tops at once as you like, and move each one in front of or behind the others',
+    notes: [
+      'turn on Frenzy at the bottom of the Wearing panel, then anything you equip into a taken slot is added instead of swapped',
+      'every item now has Back and Forward buttons in its adjust panel',
+      'unstack a hair and a hat if you want the hat to cut the hair like in game',
+    ],
+  },
+  {
     date: '2026-10-02',
     title: 'Custom skin dyer',
     body: 'The "custom" skin can now be dyed with a color picker',
